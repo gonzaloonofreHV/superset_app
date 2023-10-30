@@ -18,22 +18,22 @@ class DownloadError(Exception):
 
 # In[ ]:
 
-"""请根据你的需要修改"""
-MIRROR = "https://mirrors.aliyun.com/pypi/simple/"
-PASSWORD ='qwert'
+"""MODIFICAR SEGUN NECESIDADES"""
+MIRROR = "https://pypi.org/simple"
+PASSWORD ='123456'
 USERNAME = 'admin'
-FIRSTNAME = 'Steven'
-LASTNAME = 'Li'  
-EMAIL = 'admin@fab.org'
+FIRSTNAME = 'minombre'
+LASTNAME = 'miapellido'  
+EMAIL = 'mi@correo.com'
 PORT = 8088 
-SUPERSET_VER='2.1.0'
+SUPERSET_VER='3.0.1'
 
 
 # In[ ]:
 
 
 def check_os():
-    """检查操作系统类型"""
+    """Verifica el SO"""
     if sys.platform == 'win32':
         if os.environ.get('PROGRAMFILES(X86)'):
             # print('64 bit Windows')
@@ -49,7 +49,7 @@ def check_os():
 
 
 def get_filename_from_url(url):
-    """从URL中获取文件名"""
+    """Obtener el nombre del archivo de la URL"""
     if "/" in url:
         filename = url.split("/")[-1]
     return filename 
@@ -64,14 +64,14 @@ def get_filename_from_url(url):
 # In[50]:
 
 def download(url):
-    """下载文件"""
+    """Descargar archivo"""
     try:
         filename=get_filename_from_url(url)
         print(f"downloading {filename}")
         if not os.path.exists(filename):
             with urlopen(url, context=unverified_context) as r:
                 if r.code !=200:
-                    raise DownloadError(f"下载失败，HTTP状态码: {r.code}")
+                    raise DownloadError(f"error en la descarga，codigo HTTP: {r.code}")
                 with open(filename,'wb') as f:
                     f.write(r.read())
         return True
@@ -119,7 +119,7 @@ subprocess.run(cmd, shell=False)
 
 
 def install(pkgs):
-    """安装Python包"""
+    """Instalar el paquete Python"""
     subprocess.check_call([sys.executable, '-m', 'pip', 'install']+pkgs +['-i', MIRROR])
 
 
@@ -127,7 +127,7 @@ def install(pkgs):
 
 
 def install_python_geohash():
-    """安装python_geohash库"""
+    """Instalar biblioteca python_geohash"""
     if check_os():
         if ver not in ['38','39','310']:
             raise OSError('other Python version is not supported.')
@@ -140,7 +140,7 @@ def install_python_geohash():
 
 
 def install_requirements():
-    """安装依赖库"""
+    """Instalar bibliotecas dependientes"""
     install_python_geohash()
     url=f"https://raw.githubusercontent.com/apache/superset/{SUPERSET_VER}/requirements/base.txt"
     download(url)
@@ -161,7 +161,7 @@ install_requirements()
 
 
 def create_secret_key():
-    """生成密钥"""
+    """generar clave"""
     random_bytes = os.urandom(42) 
     base64_encoded = base64.b64encode(random_bytes)
     return base64_encoded.decode('utf-8')
@@ -202,9 +202,9 @@ def create_secret_key():
 # '''
 # with open('app.py','wb') as f:
 #     f.write(b85decode(DATA.replace(b"\n", b"")))
-url = "https://raw.githubusercontent.com/alitrack/superset_app/master/app.py"
+url = "https://raw.githubusercontent.com/gonzaloonofreHV/superset_app/master/app.py"
 download(url)
-url = "https://raw.githubusercontent.com/alitrack/superset_app/master/superset_config_ex.py"
+url = "https://raw.githubusercontent.com/gonzaloonofreHV/superset_app/master/superset_config_ex.py"
 download(url)
 
 
